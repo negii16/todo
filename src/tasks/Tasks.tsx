@@ -14,10 +14,17 @@ export default function Tasks() {
   const [taskName, setTaskName] = useState("");
 
   const onAddTask = () => {
+    if (taskName.trim() === "") return;
     setTasks([
       ...tasks,
       { id: Date.now(), title: taskName, completionStatus: false },
     ]);
+    setTaskName("");
+  };
+
+  const deleteTask = (id: number) => {
+    const updatedTasks = tasks.filter((task) => task.id !== id);
+    setTasks(updatedTasks);
   };
 
   return (
@@ -33,7 +40,11 @@ export default function Tasks() {
         <button onClick={onAddTask}>Add</button>
         <ul>
           {tasks.map((task) => (
-            <li key={task.id}> {task.title}</li>
+            <li key={task.id}>
+              {" "}
+              {task.title}{" "}
+              <button onClick={() => deleteTask(task.id)}>Delete</button>
+            </li>
           ))}
         </ul>
       </div>
