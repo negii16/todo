@@ -27,6 +27,15 @@ export default function Tasks() {
     setTasks(updatedTasks);
   };
 
+  const completedTask = (id: number) => {
+    const updatedTasks = tasks.map((task) =>
+      task.id === id
+        ? { ...task, completionStatus: !task.completionStatus }
+        : task,
+    );
+    setTasks(updatedTasks);
+  };
+
   return (
     <>
       <div className="cont">
@@ -40,10 +49,14 @@ export default function Tasks() {
         <button onClick={onAddTask}>Add</button>
         <ul>
           {tasks.map((task) => (
-            <li key={task.id}>
+            <li
+              key={task.id}
+              style={{ color: task.completionStatus ? "grey" : "black" }}
+            >
               {" "}
               {task.title}{" "}
               <button onClick={() => deleteTask(task.id)}>Delete</button>
+              <button onClick={() => completedTask(task.id)}>Complete</button>
             </li>
           ))}
         </ul>
