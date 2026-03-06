@@ -44,6 +44,11 @@ export default function Tasks() {
         <input
           value={taskName}
           onChange={(e) => setTaskName(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              onAddTask();
+            }
+          }}
           id="task-input"
         />
         <button onClick={onAddTask}>Add</button>
