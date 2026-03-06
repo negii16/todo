@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 type Task = {
   id: number;
@@ -7,11 +7,16 @@ type Task = {
 };
 
 export default function Tasks() {
-  const [tasks, setTasks] = useState<Task[]>([
-    { id: 1, title: "somethign", completionStatus: false },
-  ]);
-
+  const [tasks, setTasks] = useState<Task[]>(() => {
+    const savedTasks = localStorage.getItem("tasks");
+    return savedTasks ? JSON.parse(savedTasks) : [];
+  });
   const [taskName, setTaskName] = useState("");
+
+  // Save tasks whenever tasks change
+  useEffect(() => {
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+  }, [tasks]);
 
   const onAddTask = () => {
     if (taskName.trim() === "") return;
