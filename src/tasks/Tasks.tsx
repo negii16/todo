@@ -41,6 +41,20 @@ export default function Tasks() {
     setTasks(updatedTasks);
   };
 
+  const [editTaskId, setEditTaskId] = useState<number | null>(null);
+  const [editText, setEditText] = useState("");
+  const editTask = (task: Task) => {
+    setEditTaskId(task.id);
+    setEditText(task.title);
+  };
+  const saveTask = () => {
+    const updatedTasks = tasks.map((task) =>
+      task.id === editTaskId ? { ...task, title: editText } : task,
+    );
+    setTasks(updatedTasks);
+    setEditTaskId(null);
+  };
+
   return (
     <>
       <div className="cont">
@@ -63,10 +77,21 @@ export default function Tasks() {
               key={task.id}
               style={{ color: task.completionStatus ? "grey" : "black" }}
             >
-              {" "}
-              {task.title}{" "}
+              {editTaskId === task.id ? (
+                <input
+                  value={editText}
+                  onChange={(e) => setEditText(e.target.value)}
+                />
+              ) : (
+                task.title
+              )}{" "}
               <button onClick={() => deleteTask(task.id)}>Delete</button>
               <button onClick={() => completedTask(task.id)}>Complete</button>
+              {editTaskId === task.id ? (
+                <button onClick={saveTask}>Save</button>
+              ) : (
+                <button onClick={() => editTask(task)}>Edit</button>
+              )}
             </li>
           ))}
         </ul>
